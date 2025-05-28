@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Testcontainers
 public class ProductoControllerIT {
@@ -61,14 +61,12 @@ public class ProductoControllerIT {
 
     @Test
     void obtenerProducto_Existente_DeberiaRetornar200() throws Exception {
-        mockMvc.perform(post("/api/productos/crear")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(producto)))
-                .andExpect(status().isOk());
+        productoRepository.save(producto);
 
         mockMvc.perform(get("/api/productos/obtener/P001"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nombre").value("Camisa"));
+                .andExpect(jsonPath("$.producto.nombre").value("Camisa"));
+
     }
 
     @Test

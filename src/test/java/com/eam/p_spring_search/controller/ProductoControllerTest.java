@@ -40,7 +40,7 @@ public class ProductoControllerTest {
 
         mockMvc.perform(get("/api/productos/obtener/P001"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.codigo").value("P001"));
+                .andExpect(jsonPath("$.producto.codigo").value("P001"));
     }
 
     @Test
