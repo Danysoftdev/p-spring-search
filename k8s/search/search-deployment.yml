@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-deployment
+  namespace: p-spring-search
+  labels:
+    app: search-product
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: search-product
+  template:
+    metadata:
+      labels:
+        app: search-product
+    spec:
+      nodeSelector:
+        workload: search
+      imagePullSecrets:
+        - name: dockerhub-secret
+      containers:
+        - name: search-container
+          image: danysoftdev/p-spring-search:latest
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: maria-search-secret

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: search-pod
+  namespace: p-spring-search
+  labels:
+    app: search-product
+spec:
+  nodeSelector:
+    workload: search
+  imagePullSecrets:
+    - name: dockerhub-secret
+  containers:
+    - name: search-container
+      image: danysoftdev/p-spring-search:latest
+      ports:
+        - containerPort: 8080
+      envFrom:
+        - secretRef:
+            name: maria-search-secret
